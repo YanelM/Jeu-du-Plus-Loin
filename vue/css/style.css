@@ -16,7 +16,6 @@ body {
     padding: 10px; /* espace pour petits écrans */
 }
 
-/* Conteneur central */
 #game-container {
     text-align: center;
     background: linear-gradient(135deg, #cfcfcf, #0f2146);
@@ -24,7 +23,7 @@ body {
     border-radius: 15px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
     width: 100%;
-    max-width: 450px;
+    max-width: 450px; /* ne dépasse pas 450px sur grand écran */
 }
 
 /* Titres */
@@ -56,24 +55,13 @@ input, button {
     margin-top: 20px;
     font-size: 1.1rem;
     font-weight: bold;
+    word-wrap: break-word; /* pour petits écrans */
 }
 
-/* Animation highlight (pour chiffres et gagnants) */
-.highlight {
-    color: #e63946;
-    font-weight: bold;
-    animation: blink 1s infinite;
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
-
-/* Tablettes et mobiles moyens */
+/* Tablettes et petits ordinateurs */
 @media screen and (max-width: 768px) {
     #game-container {
-        padding: 35px 20px;
+        padding: 30px 20px;
     }
     h1 {
         font-size: 1.8rem;
@@ -94,7 +82,7 @@ input, button {
 /* Smartphones */
 @media screen and (max-width: 480px) {
     #game-container {
-        padding: 25px 15px;
+        padding: 20px 15px;
     }
     h1 {
         font-size: 1.5rem;
