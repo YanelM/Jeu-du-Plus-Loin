@@ -10,20 +10,23 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     background: #161616;
     color: white;
     padding: 10px; /* espace pour petits écrans */
 }
 
+/* Conteneur central */
 #game-container {
     text-align: center;
     background: linear-gradient(135deg, #cfcfcf, #0f2146);
-    padding: 40px 25px;
+    padding: 30px 20px;
     border-radius: 15px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    width: 100%;
-    max-width: 450px; /* ne dépasse pas 450px sur grand écran */
+    
+    width: 100%;      /* prend toute la largeur disponible */
+    max-width: 500px; /* sur grand écran, limité à 500px */
+    min-width: 260px; /* ne devient jamais trop petit */
 }
 
 /* Titres */
@@ -39,8 +42,8 @@ h2 {
 
 /* Inputs et boutons */
 input, button {
-    width: 80%;
-    max-width: 250px;
+    width: 90%;        /* occupe presque toute la largeur du conteneur */
+    max-width: 300px;  /* limite sur grands écrans */
     padding: 12px 15px;
     font-size: 1rem;
     margin-top: 10px;
@@ -55,47 +58,24 @@ input, button {
     margin-top: 20px;
     font-size: 1.1rem;
     font-weight: bold;
-    word-wrap: break-word; /* pour petits écrans */
+    word-wrap: break-word;
 }
 
-/* Tablettes et petits ordinateurs */
+/* Tablettes */
 @media screen and (max-width: 768px) {
-    #game-container {
-        padding: 30px 20px;
-    }
-    h1 {
-        font-size: 1.8rem;
-    }
-    h2 {
-        font-size: 1.3rem;
-    }
-    input, button {
-        width: 85%;
-        font-size: 0.95rem;
-        padding: 10px 12px;
-    }
-    #message {
-        font-size: 1rem;
-    }
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.3rem; }
+    input, button { font-size: 1rem; width: 95%; max-width: none; }
+    #message { font-size: 1rem; }
 }
 
 /* Smartphones */
 @media screen and (max-width: 480px) {
     #game-container {
-        padding: 20px 15px;
+        padding: 25px 15px;
     }
-    h1 {
-        font-size: 1.5rem;
-    }
-    h2 {
-        font-size: 1.1rem;
-    }
-    input, button {
-        width: 90%;
-        font-size: 0.95rem;
-        padding: 10px;
-    }
-    #message {
-        font-size: 0.95rem;
-    }
+    h1 { font-size: 1.5rem; }
+    h2 { font-size: 1.2rem; }
+    input, button { font-size: 1rem; width: 95%; max-width: none; }
+    #message { font-size: 0.95rem; }
 }
