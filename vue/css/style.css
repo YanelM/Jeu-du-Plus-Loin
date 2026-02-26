@@ -1,5 +1,10 @@
+/* Reset box-sizing pour tout */
+* {
+  box-sizing: border-box;
+}
+
 body {
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,31 +13,65 @@ body {
     flex-direction: column;
     background: #161616;
     color: white;
+    padding: 10px; /* espace pour petits écrans */
 }
+
 #game-container {
     text-align: center;
     background: linear-gradient(135deg, #cfcfcf, #0f2146);
-    padding: 30px;
+    padding: 30px 20px;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-input, button {
-    padding: 10px;
-    font-size: 16px;
-    margin-top: 10px;
-}
-#message {
-    margin-top: 20px;
-    font-size: 18px;
-    font-weight: bold;
+    width: 100%;
+    max-width: 400px; /* largeur max pour grands écrans */
 }
 
-input,button {
-    padding: 10px 15px;
-    font-size: 16px;
+input, button {
+    padding: 12px 15px;
+    font-size: 1rem;
     margin-top: 10px;
     border-radius: 8px;
     border: 1px solid #ffffff;
     background-color: #8c98af;
     color: #ffffff;
+    width: 80%; /* largeur fluide */
+    max-width: 250px; /* ne pas dépasser */
+}
+
+#message {
+    margin-top: 20px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+/* Titres adaptatifs */
+h1 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+/* Mobile friendly : petits écrans */
+@media screen and (max-width: 480px) {
+    #game-container {
+        padding: 20px 15px;
+    }
+    input, button {
+        width: 90%;
+        font-size: 1rem;
+        padding: 10px 12px;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+    h2 {
+        font-size: 1.2rem;
+    }
+    #message {
+        font-size: 1rem;
+    }
 }
