@@ -1,213 +1,22 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-<meta charset="UTF-8">
-<title>🎲 Jeu du Plus Loin</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-/* Reset général */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+    <head>
+        <meta charset="UTF-8">
+        <title>Jeu du Plus Loin</title>
+        <link rel="stylesheet" href="vue/css/style.css">
+        <link rel="icon" type="image/x-icon" href="vue/assets/images/favicon.svg">
+    </head>
+    <body>
 
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: #161616;
-    color: white;
-    padding: 10px;
-}
+        <div id="game-container">
+            <h1>🎲 Jeu du Plus Loin</h1>
+            <input type="number" id="numPlayers" placeholder="Nombre de joueurs (min 2)" min="2">
+            <br>
+            <button id="startBtn">Lancer le jeu</button>
+            <div id="message"></div>
+        </div>
 
-/* Conteneur central */
-#game-container {
-    text-align: center;
-    background: linear-gradient(135deg, #cfcfcf, #0f2146);
-    padding: 40px 25px;
-    border-radius: 15px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    
-    width: 100%;      /* prend toute la largeur disponible */
-    max-width: 500px; /* sur grand écran, limité à 500px */
-    min-width: 260px; /* ne devient jamais trop petit */
-}
+        <script src="vue/js/script.js"></script>
 
-/* Titres */
-h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-}
-
-h2 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-}
-
-/* Inputs et boutons */
-input, button {
-    width: 90%;        /* occupe presque toute la largeur du conteneur */
-    max-width: 300px;  /* limite sur grands écrans */
-    padding: 12px 15px;
-    font-size: 1rem;
-    margin-top: 10px;
-    border-radius: 8px;
-    border: 1px solid #ffffff;
-    background-color: #8c98af;
-    color: #ffffff;
-}
-
-/* Message du jeu */
-#message {
-    margin-top: 20px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    word-wrap: break-word;
-}
-
-/* Tablettes */
-@media screen and (max-width: 768px) {
-    h1 { font-size: 1.8rem; }
-    h2 { font-size: 1.3rem; }
-    input, button { font-size: 1rem; width: 95%; max-width: none; }
-    #message { font-size: 1rem; }
-}
-
-/* Smartphones */
-@media screen and (max-width: 480px) {
-    #game-container {
-        padding: 25px 15px;
-    }
-    h1 { font-size: 1.5rem; }
-    h2 { font-size: 1.2rem; }
-    input, button { font-size: 1rem; width: 95%; max-width: none; }
-    #message { font-size: 0.95rem; }
-}
-</style>
-</head>
-<body>
-
-<div id="game-container">
-    <h1>🎲 Jeu du Plus Loin</h1>
-    <input type="number" id="numPlayers" placeholder="Nombre de joueurs (min 2)" min="2">
-    <br>
-    <button id="startBtn">Lancer le jeu</button>
-    <div id="message"></div>
-</div>
-
-<script>
-const container = document.getElementById('game-container');
-let players = [];
-let currentPlayerIndex = 0;
-let guesses = [];
-let secretNumber = 0;
-
-document.getElementById('startBtn').addEventListener('click', () => {
-  const num = parseInt(document.getElementById('numPlayers').value);
-  if (isNaN(num) || num < 2) {
-    alert("Veuillez entrer un nombre valide de joueurs (min 2).");
-    return;
-  }
-
-  // Initialisation des joueurs
-  players = [];
-  for (let i = 1; i <= num; i++) {
-    players.push("Joueur " + i);
-  }
-
-  // Démarrage du premier tour
-  startNewRound();
-});
-
-function startNewRound() {
-  guesses = [];
-  currentPlayerIndex = 0;
-  secretNumber = Math.floor(Math.random() * 10);
-
-  container.innerHTML = '';
-  showNextPlayer();
-}
-
-function showNextPlayer() {
-  container.innerHTML = `
-    <h2>${players[currentPlayerIndex]}, entre ton chiffre (0-9)</h2>
-    <input type="number" id="playerGuess" min="0" max="9" autofocus>
-    <br>
-    <button id="submitBtn">Valider</button>
-    <div id="message"></div>
-  `;
-
-  const guessInput = document.getElementById('playerGuess');
-  guessInput.focus();
-
-  document.getElementById('submitBtn').addEventListener('click', () => {
-    let guess = parseInt(guessInput.value);
-    if (isNaN(guess) || guess < 0 || guess > 9) {
-      alert("Entrez un chiffre entre 0 et 9.");
-      return;
-    }
-
-    guesses.push(guess);
-    const messageDiv = document.getElementById('message');
-    messageDiv.textContent = `${players[currentPlayerIndex]} a choisi : ${guess}`;
-
-    currentPlayerIndex++;
-
-    setTimeout(() => {
-      if (currentPlayerIndex < players.length) {
-        showNextPlayer();
-      } else {
-        evaluateRound();
-      }
-    }, 500);
-  });
-}
-
-function evaluateRound() {
-  let distances = guesses.map(g => Math.abs(secretNumber - g));
-  let maxDistance = Math.max(...distances);
-  let indicesMax = distances.reduce((arr, d, i) => {
-    if (d === maxDistance) arr.push(i);
-    return arr;
-  }, []);
-
-  if (indicesMax.length > 1) {
-    // Manche nulle
-    container.innerHTML = `
-      <h2>⚠️ Manche NULLE !</h2>
-      <p>Chiffre secret : ${secretNumber}</p>
-      <p>Égalité pour la distance maximale, la manche est rejouée...</p>
-    `;
-    setTimeout(startNewRound, 2000);
-    return;
-  }
-
-  let winnerIndex = indicesMax[0];
-  const winnerName = players[winnerIndex];
-  players.splice(winnerIndex, 1);
-
-  container.innerHTML = `
-    <h2>Résultat du tour</h2>
-    <p>Chiffre secret : ${secretNumber}</p>
-    <p>Gagnant du tour : ${winnerName}</p>
-  `;
-
-  if (players.length === 1) {
-    setTimeout(() => {
-      container.innerHTML = `
-        <h2>💀 PERDANT FINAL</h2>
-        <p>${players[0]}</p>
-        <p>Nombre secret du dernier tour : ${secretNumber}</p>
-      `;
-    }, 2000);
-  } else {
-    setTimeout(startNewRound, 2000);
-  }
-}
-</script>
-
-</body>
+    </body>
 </html>
